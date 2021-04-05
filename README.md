@@ -53,3 +53,8 @@
     ```
     
     * При неверном указании **module** вернёт ответ ***Ошибка***
+* **Структура БД**:
+  * ***specialities*** : id, code (шифр специальности), title (название специальности)
+  * ***subjects*** : id, title (название предмета)
+  * ***schedule*** : id, id_subject, date (дата проведения экзамена)
+  * ***subjects_to_specialities*** : id, id_speciality, id_subject
