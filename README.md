@@ -4,6 +4,7 @@
 * **Библиотеки**: [digitalstars/DataBase](https://github.com/digitalstars/DataBase), [digitalstars/simple-api](https://github.com/digitalstars/simple-api) для PHP, [JQuery](https://jquery.com) для JS и [Bootstrap 5](https://bootstrap5.ru) для вёрстки
 * **Шаблонизатор**: PHP
 * **Формат запросов/ответов модуля api.php**: JSON
+* **Версия для андроид**: [KolyaginVlad/ScheduleAndroid](https://github.com/KolyaginVlad/ScheduleAndroid)
 * **Модули:**
   * ***index.php*** - модуль, отвечающий за загрузку главной страницы.
     * Узнаёт текущий месяц, количество дней в месяце и на основе этого формирует таблицу, содержащую ссылки для перехода на модуль **day.php**.
