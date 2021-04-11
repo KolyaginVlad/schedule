@@ -1,6 +1,5 @@
 # schedule
-## Ссылка на сайт [schedule.rf.gd](https://schedule.rf.gd)
-* **Хостинг**: Infinity Free
+## Ссылка на сайт [l12.scripthub.ru/test](https://l12.scripthub.ru/test/index.php)
 * **База данных**: MySQL
 * **Библиотеки**: [digitalstars/DataBase](https://github.com/digitalstars/DataBase), [digitalstars/simple-api](https://github.com/digitalstars/simple-api) для PHP, [JQuery](https://jquery.com) для JS и [Bootstrap 5](https://bootstrap5.ru) для вёрстки
 * **Шаблонизатор**: PHP
@@ -51,6 +50,25 @@
             $api->answer["answer"] = "Успешно добавленно";
         } else $api->answer["answer"] = "Такая запись уже существует";
     ```
+    
+    * Если **module = "getSubjects"**, то этот модуль будет возвращать массив, содержащий названия всех предметов, а также ответ **"Отправлено"**. 
+      * Отправляет следующую SQL команду базе данных: `SELECT title FROM subjects`. 
+      * Пример JSON `{"answer":"Отправлено", "subjects": ["математика", "программирование"]}`
+    * Если **module = "getSchedule"**, то этот модуль будет возвращать 3 массива, содержащих время, предметы, специальности, а также ответ **"Отправлено"**.
+      * Получает от мобильного приложения дату в формате ***d-m-yyyy***, где **d** - день 1-31 без ведущего нуля, **m** - месяц 1-12 без ведущего нуля, **yyyy** - год в 4-ёх значном формате.
+      * Используя полученные данные обращается к MySQL серверу с командой:
+      ```sql
+      SELECT DATE_FORMAT(sc.date, '%H:%i'), sb.title, GROUP_CONCAT(sp.title) 
+            FROM schedule sc 
+                JOIN subjects sb ON sc.id_subject = sb.id
+                JOIN subjects_to_specialities sbtosp ON sbtosp.id_subject = sb.id
+                JOIN specialities sp ON sbtosp.id_speciality = sp.id
+            WHERE DATE_FORMAT(sc.date, '%e-%c-%Y')=?s
+            GROUP BY DATE_FORMAT(sc.date, '%H:%i'), sb.title
+      ``` 
+        и заменителем (`?s`) из библиотеки [digitalstars/DataBase](https://github.com/digitalstars/DataBase): `[$_GET["date"]]`, который подставляет полученную от мобильного приложения дату.
+       * Пример JSON `{"answer":"Отправлено", "time" : ["8:30", "9:30"], "subjects": ["математика", "программирование"], "specialities" : ["Программная инженерия, Прикладная информатика и математика", "Программная инженерия"]}`
+       
     
     * При неверном указании **module** вернёт ответ ***{"answer":"Ошибка"}***
 * **Структура БД**:
